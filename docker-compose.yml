@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  comparison-api:
+    build: .
+    ports:
+      - "8001:8000"
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+    env_file:
+      - .env
+    volumes:
+      # Mount data directory for development (optional)
+      - ./data:/app/data:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 
